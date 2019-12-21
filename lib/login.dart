@@ -6,6 +6,11 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  String _email, _password;
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+
   @override
   Widget build(BuildContext context) {
     final logo = Hero(
@@ -17,38 +22,88 @@ class _LoginPageState extends State<LoginPage> {
       )
 
     );
-    
-    final email = TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      autofocus: false,
-      decoration: InputDecoration(
-        prefixIcon: Icon(
-          Icons.email,
-          color: Colors.black38,
-        ),
-        hintText: 'Email',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32.0)
-        )
-      ),
+    final form = Form(
+      key : _formKey,
+
+      child: Column(
+        children: <Widget>[
+          TextFormField(
+            validator:(val )=> val.length == 0 ? "Masukkan Email" : null,
+            onSaved: (val) => _email = val,
+            keyboardType: TextInputType.emailAddress,
+            autofocus: false,
+            decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.email,
+                  color: Colors.black38,
+                ),
+                hintText: 'Email',
+                contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(32.0)
+                )
+            ),
+          ),
+          Padding(
+            padding : EdgeInsets.only(top: 16.0)
+          ),
+          TextFormField(
+
+            validator: (val )=> val.length == 0 ? "Masukkan Password" : null,
+            onSaved: (val)=> _password = val,
+            decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.lock,
+                  color: Colors.black38,
+                ),
+                hintText: 'Password',
+                contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(32.0)
+                )
+            ),
+            obscureText: true,
+            autofocus: false,
+          )
+        ],
+      )
     );
 
-    final password = TextFormField(
-      autofocus: false,
-      obscureText: true,
-      decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.lock,
-            color: Colors.black38,
-          ),
-          hintText: 'Password',
-          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-          border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(32.0)
-          )
-      ),
-    );
+//    final email = TextFormField(
+//      key: formKey,
+//      validator: (val )=> val.length == 0 ? "Masukkan Email" : null,
+//      keyboardType: TextInputType.emailAddress,
+//      autofocus: false,
+//      decoration: InputDecoration(
+//        prefixIcon: Icon(
+//          Icons.email,
+//          color: Colors.black38,
+//        ),
+//        hintText: 'Email',
+//        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+//        border: OutlineInputBorder(
+//          borderRadius: BorderRadius.circular(32.0)
+//        )
+//      ),
+//    );
+//
+//    final password = TextFormField(
+//      key: formKey,
+//      validator: (val )=> val.length == 0 ? "Masukkan Password" : null,
+//      autofocus: false,
+//      obscureText: true,
+//      decoration: InputDecoration(
+//          prefixIcon: Icon(
+//            Icons.lock,
+//            color: Colors.black38,
+//          ),
+//          hintText: 'Password',
+//          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+//          border: OutlineInputBorder(
+//              borderRadius: BorderRadius.circular(32.0)
+//          )
+//      ),
+//    );
 
     final loginButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -72,7 +127,7 @@ class _LoginPageState extends State<LoginPage> {
         child: MaterialButton(
           minWidth: 200.0,
           height: 42.0,
-          onPressed: (){},
+          onPressed: validateForm,
           child: Text('LOGIN', style: TextStyle(color: Colors.white)),
           ),
         ),
@@ -107,15 +162,21 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             logo,
             SizedBox(height: 48.0,),
-            email,
+            form,
             SizedBox(height: 8.0,),
-            password,
-            SizedBox(height: 24.0,),
             loginButton,
             daftarAkun
           ],
         ),
       ),
     );
+  }
+  void validateForm(){
+    print("Validasi Login");
+    if(_formKey.currentState.validate()){
+      print("Validasi Sukses");
+    }else{
+      print("Validasi Error");
+    }
   }
 }
