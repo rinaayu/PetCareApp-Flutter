@@ -8,13 +8,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+
     final logo = Hero(
       tag : 'hero',
       child: CircleAvatar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         radius: 80.0,
         child: Image.asset('assets/LOGO.PNG'),
       )
+
 
     );
     
