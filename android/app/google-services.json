@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "293554799446",
+    "firebase_url": "https://pet-care-tubes-app.firebaseio.com",
+    "project_id": "pet-care-tubes-app",
+    "storage_bucket": "pet-care-tubes-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:293554799446:android:8dd9ba9dc0cfcf112b0cf7",
+        "android_client_info": {
+          "package_name": "com.rina.pet_care"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "293554799446-k9rpd2qm9m5jsdme3ib1ndf9cq294iqa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJudCX9yooAtY1OsmBc0pQTo1pRt2sOro"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "293554799446-k9rpd2qm9m5jsdme3ib1ndf9cq294iqa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
