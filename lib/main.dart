@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'login.dart';
+import 'package:pet_care/splashscreen_view.dart';
+
+
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  MaterialApp(
       title: 'Pet Care',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.lightBlue
-      ),
-      home: LoginPage(),
+
+      home : SplashScreenPage(),
+
     );
   }
 }
