@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pet_care/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pet_care/navigasi.dart';
+
 class LoginPage extends StatefulWidget {
   static String tag = 'login-page';
   @override
@@ -49,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
           TextFormField(
 
-            validator: (val )=> val.length == 0 ? "Masukkan Password" : null,
+            validator: (val)=> val.length == 0 ? "Masukkan Password" : null,
             onSaved: (val)=> _password = val,
             decoration: InputDecoration(
                 prefixIcon: Icon(
@@ -68,42 +72,6 @@ class _LoginPageState extends State<LoginPage> {
         ],
       )
     );
-
-//    final email = TextFormField(
-//      key: formKey,
-//      validator: (val )=> val.length == 0 ? "Masukkan Email" : null,
-//      keyboardType: TextInputType.emailAddress,
-//      autofocus: false,
-//      decoration: InputDecoration(
-//        prefixIcon: Icon(
-//          Icons.email,
-//          color: Colors.black38,
-//        ),
-//        hintText: 'Email',
-//        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-//        border: OutlineInputBorder(
-//          borderRadius: BorderRadius.circular(32.0)
-//        )
-//      ),
-//    );
-//
-//    final password = TextFormField(
-//      key: formKey,
-//      validator: (val )=> val.length == 0 ? "Masukkan Password" : null,
-//      autofocus: false,
-//      obscureText: true,
-//      decoration: InputDecoration(
-//          prefixIcon: Icon(
-//            Icons.lock,
-//            color: Colors.black38,
-//          ),
-//          hintText: 'Password',
-//          contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-//          border: OutlineInputBorder(
-//              borderRadius: BorderRadius.circular(32.0)
-//          )
-//      ),
-//    );
 
     final loginButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
@@ -141,18 +109,12 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 60.0,),
             FlatButton(
                 child: Text("DAFTAR", style: TextStyle(color: Color.fromRGBO(114, 150, 101, 1))),
-              onPressed: (){},
+              onPressed: registerPage,
             )
           ],
         ),
       );
-//    final daftarAkun = FlatButton(
-//      child : Text(
-//        'Belum Punya Akun ? DAFTAR',
-//        style: TextStyle(color: Colors.black54),
-//      ),
-//      onPressed:(){} ,
-//    );
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -171,12 +133,40 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-  void validateForm(){
+  Future<void> validateForm() async {
     print("Validasi Login");
     if(_formKey.currentState.validate()){
-      print("Validasi Sukses");
+      _formKey.currentState.save();
+      try{
+        AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Navigasi()));
+        print("Validasi Sukses");
+      }catch(e){
+        print(e.message);
+        showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context)
+            {
+              return AlertDialog(
+                title: Text("Email atau Password Salah"),
+                content: Text("Masukkan Email dan Password yang Benar"),
+                actions: <Widget>[
+                  FlatButton(
+                    onPressed: ()=>Navigator.of(context).pop(),
+                    child: Text("Coba Lagi"),
+                  )
+                ],
+              );
+            }
+        );
+      }
     }else{
       print("Validasi Error");
     }
+  }
+
+  void registerPage(){
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterPage()));
   }
 }
