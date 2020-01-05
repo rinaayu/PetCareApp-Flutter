@@ -16,23 +16,18 @@ class _AdoptionPageState extends State<AdoptionPage> {
 
   TextEditingController jenisInputController;
   TextEditingController nameInputController;
+  TextEditingController priceInputController;
   String id;
   final db = Firestore.instance;
-  //final _formKey = GlobalKey<FormState>();
-  String name;
+   String name;
   String jenis;
+  String price;
 
-  //create tha funtion navigateToDetail
   navigateToDetail(DocumentSnapshot ds) {
-//    Navigator.push(
-//        context,
-//        MaterialPageRoute(
-//            builder: (context) => MyUpdatePage(
-//              ds: ds,
-//            )));
+
   }
 
-  //create tha funtion navigateToDetail
+
   navigateToInfo(DocumentSnapshot ds) {
     Navigator.push(
         context,
@@ -42,12 +37,6 @@ class _AdoptionPageState extends State<AdoptionPage> {
             )));
   }
 
-
-//  void deleteData(DocumentSnapshot doc) async {
-//    await db.collection('CRUD').document(doc.documentID).delete();
-//    setState(() => id = null);
-//  }
-
   @override
   Widget build(BuildContext context) {
     CommonThings.size = MediaQuery.of(context).size;
@@ -55,20 +44,11 @@ class _AdoptionPageState extends State<AdoptionPage> {
       appBar: AppBar(
         title: Text('Adopsi'),
         actions: <Widget>[
-//          IconButton(
-//            icon: Icon(Icons.list),
-//            tooltip: 'List',
-//            onPressed: () {
-//              Route route = MaterialPageRoute(builder: (context) => MyListPage());
-//              Navigator.push(context, route);
-//            },
-//          ),
           IconButton(
             icon: Icon(Icons.search),
             tooltip: 'Search',
             onPressed: () {
-//              Route route = MaterialPageRoute(builder: (context) => MyQueryPage());
-//              Navigator.push(context, route);
+
             },
           ),
         ],
@@ -82,9 +62,9 @@ class _AdoptionPageState extends State<AdoptionPage> {
             int length = snapshot.data.documents.length;
             return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, //two columns
-                  mainAxisSpacing: 0.1, //space the card
-                  childAspectRatio: 0.800, //space largo de cada card
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 0.1,
+                  childAspectRatio: 0.800,
                 ),
                 itemCount: length,
                 padding: EdgeInsets.all(2.0),
@@ -117,7 +97,8 @@ class _AdoptionPageState extends State<AdoptionPage> {
                                   fontSize: 19.0,
                                 ),
                               ),
-                              subtitle: Text(
+                              subtitle:
+                              Text(
                                 doc.data["jenis"],
                                 style: TextStyle(
                                     color: Colors.black87, fontSize: 12.0),
@@ -137,7 +118,7 @@ class _AdoptionPageState extends State<AdoptionPage> {
                                         Icons.favorite_border,
                                         color: Colors.grey,
                                       ),
-                                      onPressed: () {}, //funciona
+                                      onPressed: () {},
                                     ),
                                     IconButton(
                                       icon: Icon(
