@@ -24,6 +24,7 @@ class _PostPageState extends State<PostPage> {
   String name;
   String desc;
   String jenis;
+  String price;
 
 
 
@@ -72,7 +73,7 @@ class _PostPageState extends State<PostPage> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       DocumentReference ref = await db.collection('posts').add(
-          {'name': '$name', 'desc': '$desc', 'jenis': '$jenis', 'image': '$fullPathImage'});
+          {'name': '$name', 'desc': '$desc', 'jenis': '$jenis', 'price': '$price', 'image': '$fullPathImage'});
       setState(() => id = ref.documentID);
       Navigator.of(context).pop(); //regrese a la pantalla anterior
     }
@@ -141,6 +142,22 @@ class _PostPageState extends State<PostPage> {
                       }
                     },
                     onSaved: (value) => jenis = value,
+                  ),
+                ),
+                Container(
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Harga',
+                      fillColor: Colors.grey[300],
+                      filled: true,
+                    ),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                    },
+                    onSaved: (value) => price = value,
                   ),
                 ),
                 Container(
