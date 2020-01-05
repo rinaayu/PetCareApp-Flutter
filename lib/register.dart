@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_care/home.dart';
 import 'package:pet_care/login.dart';
+import 'package:pet_care/navigasi.dart';
 
 class RegisterPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -12,15 +13,37 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   String _email, _password, _nama, _ulangpassword;
 
+  getEmail(_email){
+    this._email = _email;
+  }
+
+  getPassword(_password){
+    this._password = _password;
+  }
+
+  getNama(_nama){
+    this._nama = _nama;
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 
   @override
   Widget build(BuildContext context) {
 
+    final logo = Hero(
+        tag : 'hero',
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 70.0,
+          child: Image.asset('assets/LOGO.PNG'),
+        )
+
+    );
+
     final regisText = Column(
       children: <Widget>[
-        Text("REGISTRASI", style: TextStyle(color: Colors.teal[900], fontSize: 30,fontWeight:FontWeight.bold ),),
+        Text("REGISTRASI", style: TextStyle(color: Colors.teal[900], fontSize: 25,fontWeight:FontWeight.bold ),),
       ],
     );
     final form = Form(
@@ -31,6 +54,9 @@ class _RegisterPageState extends State<RegisterPage> {
             TextFormField(
               validator:(val )=> val.length == 0 ? "Masukkan Nama" : null,
               onSaved: (val) => _nama = val,
+              onChanged: (String str){
+                getNama(str);
+              },
               keyboardType: TextInputType.text,
               autofocus: false,
               decoration: InputDecoration(
@@ -51,6 +77,9 @@ class _RegisterPageState extends State<RegisterPage> {
             TextFormField(
               validator:(val )=> val.length == 0 ? "Masukkan Email" : null,
               onSaved: (val) => _email = val,
+              onChanged: (String str){
+                getEmail(str);
+              },
               keyboardType: TextInputType.emailAddress,
               autofocus: false,
               decoration: InputDecoration(
@@ -80,6 +109,9 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               //validator:(val)=> val.length == 0 ? "Masukkan Password" : null,
               onSaved: (val)=> _password = val,
+              onChanged: (String str){
+                getPassword(str);
+              },
               decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.lock,
@@ -160,7 +192,7 @@ class _RegisterPageState extends State<RegisterPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text("Sudah Punya Akun?"),
-          SizedBox(height: 60.0,),
+          SizedBox(height: 10.0,),
           FlatButton(
             child: Text("LOGIN", style: TextStyle(color: Color.fromRGBO(114, 150, 101, 1))),
             onPressed: loginPage,
@@ -181,8 +213,10 @@ class _RegisterPageState extends State<RegisterPage> {
             Center(
               child: Column(
                 children: <Widget>[
+                  logo,
+                  SizedBox(height: 20.0,),
                   regisText,
-                  SizedBox(height: 48.0,),
+                  SizedBox(height: 20.0,),
                   form,
                   SizedBox(height: 8.0,),
                   regisButton,
@@ -201,14 +235,23 @@ class _RegisterPageState extends State<RegisterPage> {
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
       try{
-        AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+      DocumentReference ds=Firestore.instance.collection('user').document(_nama);
+      Map<String, dynamic> users={
+        "nama" : _nama,
+        "email" : _email,
+        "password" : _password,
+       };
+      ds.setData(users).whenComplete((){
+        print("created successfully");
+      });
+      AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+      Navigator.push(context, MaterialPageRoute(builder: (context) => Navigasi()));
       }catch(e){
         print(e.message);
       }
-      print("Validasi Sukses");
+    print("Validasi Sukses");
     }else{
-      print("Validasi Error");
+    print("Validasi Error");
     }
   }
 
