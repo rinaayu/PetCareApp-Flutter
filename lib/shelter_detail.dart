@@ -1,50 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DetailPage extends StatefulWidget{
+class DetailShelterPage extends StatefulWidget {
   final DocumentSnapshot ds;
-  DetailPage({this.ds});
+  DetailShelterPage({this.ds});
   @override
-  _DetailPageState createState() => _DetailPageState();
+  _DetailShelterPageState createState() => _DetailShelterPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _DetailShelterPageState extends State<DetailShelterPage> {
   String productImage;
-  String id;
-  String name;
-  String jenis;
-  String desc;
+  String nama;
+  String rate;
+  String phone;
+  String alamat;
+  String servis;
+  String hari;
+  String pukul;
 
-  TextEditingController nameInputController;
-  TextEditingController descInputController;
-  TextEditingController jenisInputController;
+  TextEditingController namaInputController;
+  TextEditingController rateInputController;
+  TextEditingController alamatInputController;
+  TextEditingController phoneInputController;
+  TextEditingController servisInputController;
+  TextEditingController operasionalInputController;
 
   Future getPost() async {
     var firestore = Firestore.instance;
-    QuerySnapshot qn = await firestore.collection("posts").getDocuments();
+    QuerySnapshot qn = await firestore.collection("shelter").getDocuments();
     return qn.documents;
   }
 
   @override
   void initState() {
     super.initState();
-    descInputController =
-    new TextEditingController(text: widget.ds.data["desc"]);
-    jenisInputController =
-    new TextEditingController(text: widget.ds.data["jenis"]);
-    nameInputController =
-    new TextEditingController(text: widget.ds.data["name"]);
-    productImage = widget.ds.data["image"];
-    print(productImage);
+    namaInputController =
+    new TextEditingController(text: widget.ds.data["nama"]);
+    rateInputController =
+    new TextEditingController(text: widget.ds.data["rate"]);
+    alamatInputController =
+    new TextEditingController(text: widget.ds.data["alamat"]);
+    phoneInputController =
+    new TextEditingController(text: widget.ds.data["phone"]);
+    servisInputController =
+    new TextEditingController(text: widget.ds.data["servis"]);
+   operasionalInputController =
+    new TextEditingController(text: widget.ds.data["hari"] + '\nPukul ' + widget.ds.data["pukul"] );
+
   }
 
   @override
   Widget build(BuildContext context) {
     getPost();
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         title: Text('Detail'),
-    ),
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Card(
@@ -59,51 +70,66 @@ class _DetailPageState extends State<DetailPage> {
                       decoration: new BoxDecoration(
                           border: new Border.all(color: Colors.blueAccent)),
                       padding: new EdgeInsets.all(5.0),
-                      child: productImage == ''
-                          ? Text('Edit')
-                          : Image.network(productImage + '?alt=media'),
+                      child: productImage != null
+                          ? Image.network(productImage + '?alt=media')
+                          : Image.network('https://firebasestorage.googleapis.com/v0/b/pet-care-tubes-app.appspot.com/o/default.jpg?alt=media&token=9785f34a-6a70-4c5e-a68d-36cd91717a41')
                     ),
                   ],
                 ),
                 new IniciarIcon(),
                 new ListTile(
-                  leading: const Icon(Icons.perm_identity, color: Colors.black),
+                  leading: const Icon(Icons.star_border, color: Colors.black),
                   title: new TextFormField(
-                    controller: nameInputController,
+                    controller: rateInputController,
                     validator: (value) {
                       if (value.isEmpty) return "Ingresa un nombre";
                     },
                     decoration: new InputDecoration(
-                        hintText: "Nama Hewan", labelText: "Nama Hewan"),
+                        hintText: "Rating", labelText: "Rating"),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 8.0),
                 ),
                 new ListTile(
-                  leading: const Icon(Icons.pets, color: Colors.black),
+                  leading: const Icon(Icons.room_service, color: Colors.black),
                   title: new TextFormField(
-                    controller: jenisInputController,
+                    controller: servisInputController,
                     validator: (value) {
                       if (value.isEmpty) return "Ingresa un nombre";
                     },
                     decoration: new InputDecoration(
-                        hintText: "Jenis Hewan", labelText: "Jenis Hewan"),
+                        hintText: "Servis", labelText: "Servis"),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 8.0),
                 ),
                 new ListTile(
-                  leading: const Icon(Icons.list, color: Colors.black),
+                  leading: const Icon(Icons.access_time, color: Colors.black),
+                  title: new TextFormField(
+                    maxLines: 2,
+                    controller: operasionalInputController,
+                    validator: (value) {
+                      if (value.isEmpty) return "Ingresa un nombre";
+                    },
+                    decoration: new InputDecoration(
+                        hintText: "Operasional", labelText: "Operasional"),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                ),
+                new ListTile(
+                  leading: const Icon(Icons.location_on, color: Colors.black),
                   title: new TextFormField(
                     maxLines: 10,
-                    controller: descInputController,
+                    controller: alamatInputController,
                     validator: (value) {
                       if (value.isEmpty) return "Ingresa un nombre";
                     },
                     decoration: new InputDecoration(
-                        hintText: "Deskripsi", labelText: "Deskripsi"),
+                        hintText: "Alamat", labelText: "Alamat"),
                   ),
                 ),
                 Padding(
@@ -168,7 +194,5 @@ class IconoMenu extends StatelessWidget {
     );
   }
 }
-
-
 
 
