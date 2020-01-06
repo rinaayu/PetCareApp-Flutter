@@ -54,7 +54,23 @@ class _DetailShelterPageState extends State<DetailShelterPage> {
     getPost();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Detail'),
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF185058),
+                    Color(0xFF008772)
+                  ],
+                  begin: FractionalOffset.topLeft,
+                  end: FractionalOffset.bottomRight
+              )
+          ),
+        ),
+        title: Text('Detail', style: TextStyle(color: Colors.white),),
+
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -68,7 +84,7 @@ class _DetailShelterPageState extends State<DetailShelterPage> {
                       height: 300.0,
                       width: 300.0,
                       decoration: new BoxDecoration(
-                          border: new Border.all(color: Colors.blueAccent)),
+                          border: new Border.all(color: Color(0xFF185058))),
                       padding: new EdgeInsets.all(5.0),
                       child: productImage != null
                           ? Image.network(productImage + '?alt=media')
@@ -183,11 +199,11 @@ class IconoMenu extends StatelessWidget {
           new Icon(
             icon,
             size: 50.0,
-            color: Colors.blue,
+            color: Color(0xFF185058),
           ),
           new Text(
             label,
-            style: new TextStyle(fontSize: 12.0, color: Colors.blue),
+            style: new TextStyle(fontSize: 12.0, color: Color(0xFF185058)),
           )
         ],
       ),

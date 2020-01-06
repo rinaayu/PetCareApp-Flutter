@@ -43,7 +43,23 @@ class _PetShelterPageState extends State<PetShelterPage> {
     CommonThings.size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pet Shelter'),
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF185058),
+                    Color(0xFF008772)
+                  ],
+                  begin: FractionalOffset.topLeft,
+                  end: FractionalOffset.bottomRight
+              )
+          ),
+        ),
+        title: Text('Pet Shelter', style: TextStyle(color: Colors.white),),
+
       ),
       body: StreamBuilder(
         stream: Firestore.instance.collection("shelter").snapshots(),

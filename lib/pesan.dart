@@ -10,9 +10,21 @@ class _PesanState extends State<Pesan> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: Text("Pesan"),
+
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF185058),
+                    Color(0xFF008772)
+                  ],
+                  begin: FractionalOffset.topLeft,
+                  end: FractionalOffset.bottomRight
+              )
+          ),
+        ),
+        title: Text('Pesan', style: TextStyle(color: Colors.white),),
+
       ),
       body: Container(
         color: Colors.grey[200],

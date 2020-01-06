@@ -14,10 +14,12 @@ class _DetailPageState extends State<DetailPage> {
   String name;
   String jenis;
   String desc;
+  String price;
 
   TextEditingController nameInputController;
   TextEditingController descInputController;
   TextEditingController jenisInputController;
+  TextEditingController priceInputController;
 
   Future getPost() async {
     var firestore = Firestore.instance;
@@ -34,6 +36,8 @@ class _DetailPageState extends State<DetailPage> {
     new TextEditingController(text: widget.ds.data["jenis"]);
     nameInputController =
     new TextEditingController(text: widget.ds.data["name"]);
+    priceInputController =
+    new TextEditingController(text: widget.ds.data["price"]);
     productImage = widget.ds.data["image"];
     print(productImage);
   }
@@ -42,9 +46,25 @@ class _DetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     getPost();
     return Scaffold(
-        appBar: AppBar(
-        title: Text('Detail'),
-    ),
+      appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF185058),
+                    Color(0xFF008772)
+                  ],
+                  begin: FractionalOffset.topLeft,
+                  end: FractionalOffset.bottomRight
+              )
+          ),
+        ),
+        title: Text('Detail', style: TextStyle(color: Colors.white),),
+
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Card(
@@ -57,7 +77,7 @@ class _DetailPageState extends State<DetailPage> {
                       height: 300.0,
                       width: 300.0,
                       decoration: new BoxDecoration(
-                          border: new Border.all(color: Colors.blueAccent)),
+                          border: new Border.all(color: Color(0xFF185058))),
                       padding: new EdgeInsets.all(5.0),
                       child: productImage == ''
                           ? Text('Edit')
@@ -89,6 +109,20 @@ class _DetailPageState extends State<DetailPage> {
                     },
                     decoration: new InputDecoration(
                         hintText: "Jenis Hewan", labelText: "Jenis Hewan"),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                ),
+                new ListTile(
+                  leading: const Icon(Icons.attach_money, color: Colors.black),
+                  title: new TextFormField(
+                    controller: priceInputController,
+                    validator: (value) {
+                      if (value.isEmpty) return "Free";
+                    },
+                    decoration: new InputDecoration(
+                        hintText: "Harga", labelText: "Harga"),
                   ),
                 ),
                 Padding(
@@ -157,11 +191,11 @@ class IconoMenu extends StatelessWidget {
           new Icon(
             icon,
             size: 50.0,
-            color: Colors.blue,
+            color: Color(0xFF185058),
           ),
           new Text(
             label,
-            style: new TextStyle(fontSize: 12.0, color: Colors.blue),
+            style: new TextStyle(fontSize: 12.0, color: Color(0xFF185058)),
           )
         ],
       ),

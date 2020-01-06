@@ -42,16 +42,23 @@ class _AdoptionPageState extends State<AdoptionPage> {
     CommonThings.size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Adopsi'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search),
-            tooltip: 'Search',
-            onPressed: () {
-
-            },
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF185058),
+                    Color(0xFF008772)
+                  ],
+                  begin: FractionalOffset.topLeft,
+                  end: FractionalOffset.bottomRight
+              )
           ),
-        ],
+        ),
+        title: Text('Adopsi', style: TextStyle(color: Colors.white),),
+        
       ),
       body: StreamBuilder(
           stream: Firestore.instance.collection("posts").snapshots(),
@@ -142,10 +149,11 @@ class _AdoptionPageState extends State<AdoptionPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
+
           Icons.add,
           color: Colors.white,
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF185058),
         onPressed: () {
           Route route = MaterialPageRoute(builder: (context) => PostPage());
           Navigator.push(context, route);

@@ -83,9 +83,23 @@ class _PostPageState extends State<PostPage> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Posting Hewan'),
-      ),
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.white, //change your color here
+          ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+            gradient: LinearGradient(
+            colors: [
+            Color(0xFF185058),
+            Color(0xFF008772)],
+                begin: FractionalOffset.topLeft,
+                end: FractionalOffset.bottomRight
+           )
+         ),
+        ),
+          title: Text('Posting Hewan', style: TextStyle(color: Colors.white),),
+        ),
       body: ListView(
         padding: EdgeInsets.all(8),
         children: <Widget>[
@@ -186,7 +200,7 @@ class _PostPageState extends State<PostPage> {
               RaisedButton(
                 onPressed: createData,
                 child: Text('Post', style: TextStyle(color: Colors.white)),
-                color: Colors.green,
+                color: Color(0xFF185058),
               ),
             ],)
         ],

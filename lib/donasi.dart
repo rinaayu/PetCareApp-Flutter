@@ -12,21 +12,25 @@ class _DonationPageState extends State<DonationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Donasi', style: TextStyle(color: Colors.white),),
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  colors: [
-                    Color(0xFF185058),
-                    Color(0xFF008772)
-                  ],
-                  begin: FractionalOffset.topLeft,
-                  end: FractionalOffset.bottomRight
-              )
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: Colors.white, //change your color here
           ),
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      Color(0xFF185058),
+                      Color(0xFF008772)
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight
+                )
+            ),
+          ),
+          title: Text('Donasi', style: TextStyle(color: Colors.white),),
+
         ),
-      ),
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
