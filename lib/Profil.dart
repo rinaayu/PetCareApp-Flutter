@@ -1,10 +1,14 @@
 
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_care/Posting.dart';
 import 'package:pet_care/edit_profile.dart';
 
 import 'package:pet_care/post.dart';
+
+import 'login.dart';
 
 class Profil extends StatefulWidget {
   @override
@@ -14,8 +18,7 @@ class Profil extends StatefulWidget {
 
 class _ProfilState extends State<Profil> with TickerProviderStateMixin {
 
-  final urlProfile = 'https://en.wikipedia.org/wiki/Cat#/media/File:Kittyply_edit1.jpg';
-
+  final urlProfile = 'https://image.flaticon.com/icons/png/512/64/64572.pnghttps://cdn2.iconfinder.com/data/icons/font-awesome/1792/user-512.png';
 
   TabController _tabController;
 
@@ -48,19 +51,53 @@ class _ProfilState extends State<Profil> with TickerProviderStateMixin {
                   end: FractionalOffset.bottomRight
               )
           ),
-
         ),
+        actions: <Widget>[
+          IconButton(icon: Icon(Icons.exit_to_app), color: Colors.grey[300], onPressed: (){FirebaseAuth.instance.signOut().then((user) {
+      Navigator.of(context) .pushReplacement(
+        MaterialPageRoute(builder:  (_){
+          return LoginPage();
+        }),
+      );
+          });})
+        ],
         title: Center(child: Text('Profil', style: TextStyle(color: Colors.white),)),
 
       ),
       body: Container(
-
+          color: Colors.grey[200],
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             LastViewed(),
             ProfileInformation(urlProfile: urlProfile),
-            ProfileDescription(),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      FutureBuilder(
+                        future: FirebaseAuth.instance.currentUser(),
+                        builder: (BuildContext context, AsyncSnapshot user){
+                          if (user.connectionState == ConnectionState.waiting) {
+                            return Container();
+                          } else{
+                            return Column(
+                              children: <Widget>[
+                                Text(user.data.displayName.toString(),style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),),
+                                SizedBox(height: 5.0,),
+                                Text(user.data.email.toString(), style: TextStyle(fontSize: 15),)
+                              ],
+                            );
+                          }
+                        },
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
             ShortcutButton(),
             Divider(),
             ListPosts(tabController: _tabController),
@@ -170,40 +207,6 @@ class ShortcutButton extends StatelessWidget {
   }
 }
 
-class ProfileDescription extends StatelessWidget {
-  const ProfileDescription({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-       child: Container(
-         child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-          Center(child: Text(
-            "Dea Amanda",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          )),
-          Center(child: Text(
-            "dea@gmail.com",
-            style: TextStyle(color: Colors.grey),
-          )),
-              Center(child: Text(
-            "I love my cats more than I love most people",
-          )),
-          Text(
-            "",
-            style: TextStyle(color: Colors.blue),
-          ),
-        ],
-      ),
-    ));
-  }
-}
-
 class ProfileInformation extends StatelessWidget {
   const ProfileInformation({
     Key key,
@@ -222,7 +225,8 @@ class ProfileInformation extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(50),
             child: CircleAvatar(
-              backgroundImage: AssetImage('assets/pp.jpg'),
+              backgroundColor: Colors.white,
+              backgroundImage:NetworkImage('https://cdn2.iconfinder.com/data/icons/font-awesome/1792/user-512.png'),
             ),
 
             ),
