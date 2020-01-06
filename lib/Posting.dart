@@ -12,10 +12,22 @@ class Post extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Colors.black,
+          color: Colors.white, //change your color here
         ),
-        backgroundColor: Colors.white70,
-        title: Text('Posts', style: TextStyle(color: Colors.black),),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF185058),
+                    Color(0xFF008772)
+                  ],
+                  begin: FractionalOffset.topLeft,
+                  end: FractionalOffset.bottomRight
+              )
+          ),
+        ),
+        title: Text('Posts', style: TextStyle(color: Colors.white),),
+
       ),
       body: Container(
         //LAGI LAGI KITA GUNAKAN COLUMN UNTUK MENGATUR LAYOUT SECARA VERTICAL
@@ -70,17 +82,7 @@ class Post extends StatelessWidget {
               height: MediaQuery.of(context).size.height / 3,
             ),
             //BAGIAN INI ADALAH INSIGHT DAN PROMOSI, HANYA BERISI TEKS DAN TOMBOL
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              //YANG LAGI LAGI DIBUNGKUS DENGAN ROW
-              child: Row(
-                //DAN ATTRIBUTENYA DI-SET SPACEBETWEEN UNTUK MEMBERI JARAK KEDUANYA
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text("View Insights", style: TextStyle(color: Colors.blue, fontSize: 16),),
-                  RaisedButton(onPressed: (){}, child: Text('Promote'), color: Colors.blue, textColor: Colors.white,)
-                ],),
-            ),
+
             //BUAT GARIS PEMISAH
             Divider(),
             //BAGIAN INI ADALAH KUMPULAN ICON YANG ADA DIBAWAH
