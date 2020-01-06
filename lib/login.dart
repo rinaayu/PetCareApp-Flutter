@@ -167,6 +167,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void registerPage(){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>RegisterPage()));
+    Navigator.of(context) .pushReplacement(
+      MaterialPageRoute(builder:  (_){
+        return RegisterPage();
+      }),
+    );
   }
 }

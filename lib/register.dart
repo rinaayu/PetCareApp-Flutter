@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_care/login.dart';
 import 'package:pet_care/navigasi.dart';
+import 'package:pet_care/usermanagement.dart';
 
 class RegisterPage extends StatefulWidget {
   static String tag = 'login-page';
@@ -235,20 +236,46 @@ class _RegisterPageState extends State<RegisterPage> {
     if(_formKey.currentState.validate()){
       _formKey.currentState.save();
       try{
-      DocumentReference ds=Firestore.instance.collection('user').document(_nama);
-      Map<String, dynamic> users={
-        "nama" : _nama,
-        "email" : _email,
-        "password" : _password,
-       };
-      ds.setData(users).whenComplete((){
-        print("created successfully");
-      });
-      AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Navigasi()));
-      }catch(e){
+        FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password).then((signedInUser)async{
+          var userUpdateInfo = new UserUpdateInfo();
+          userUpdateInfo.displayName = _nama;
+          userUpdateInfo.photoUrl = 'https://firebasestorage.googleapis.com/v0/b/pet-care-tubes-app.appspot.com/o/default.jpg?alt=media&token=9785f34a-6a70-4c5e-a68d-36cd91717a41';
+          await signedInUser.user.updateProfile(userUpdateInfo);
+          await signedInUser.user.reload();
+          FirebaseUser updateUser = await FirebaseAuth.instance.currentUser();
+          print('Username is: ${updateUser.displayName}');
+        }).then((user){
+          FirebaseAuth.instance.currentUser().then((user)
+          {
+            print('User:${user.photoUrl}:ok');
+
+            UserManagement().storeNewUser(user, context);
+          });
+        }).catchError((e) {
+          print(e);
+        });
+        Navigator.of(context). pushReplacement(
+          MaterialPageRoute(builder: (_){
+            return Navigasi();
+          }),
+        );
+            }catch(e){
         print(e.message);
       }
+//      DocumentReference ds=Firestore.instance.collection('user').document(_nama);
+//      Map<String, dynamic> users={
+//        "nama" : _nama,
+//        "email" : _email,
+//        "password" : _password,
+//       };
+//      ds.setData(users).whenComplete((){
+//        print("created successfully");
+//      });
+//      AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+//      Navigator.push(context, MaterialPageRoute(builder: (context) => Navigasi()));
+//      }catch(e){
+//        print(e.message);
+//      }
     print("Validasi Sukses");
     }else{
     print("Validasi Error");
@@ -256,6 +283,10 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void loginPage(){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginPage()));
+    Navigator.of(context) .pushReplacement(
+      MaterialPageRoute(builder:  (_){
+        return LoginPage();
+      }),
+    );
   }
 }
